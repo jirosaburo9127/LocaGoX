@@ -89,7 +89,7 @@ export default async function StoreDetailPage({
               <Link className="public-secondary" href={backHref}>
                 戻る
               </Link>
-              <span className={getPublicPillClassName("近くのお店をチェック中", "public-inline-icon")}><PinIcon />近くのお店をチェック中</span>
+              <span className={getPublicPillClassName("近くのお店", "public-inline-icon")}><PinIcon />近くのお店</span>
               <FavoriteButton storeId={store.id} storeName={store.name} />
             </div>
 
@@ -155,9 +155,9 @@ export default async function StoreDetailPage({
           <section className="public-section" style={{ marginTop: 20 }}>
             <div className="public-section-head">
               <div>
-                <span className="public-kicker">You May Also Like</span>
-                <h2 className="section-title">近くのおすすめも見る</h2>
-                <p className="public-section-copy">ほかの候補も見たいときは、近くのお店を続けてチェックできます。</p>
+                <span className="public-kicker">Also</span>
+                <h2 className="section-title">近くのおすすめ</h2>
+                <p className="public-section-copy">近くの別候補もチェックできます。</p>
               </div>
             </div>
             <div className="public-card-grid">
@@ -167,7 +167,7 @@ export default async function StoreDetailPage({
                   <img alt="" className="public-card-image" src="/store-card.jpg" />
                   <span className="public-kicker">{candidate.area}</span>
                   <h3>{candidate.name}</h3>
-                  <p>今の候補とあわせて見ておきたい、近くのおすすめです。</p>
+                  <p>近くのおすすめ</p>
                 </Link>
               ))}
             </div>
@@ -176,32 +176,31 @@ export default async function StoreDetailPage({
 
         <aside className="public-sticky">
           <span className="public-kicker">Reserve</span>
-          <h3 style={{ marginTop: 14, marginBottom: 10, fontSize: 34, letterSpacing: "-0.04em" }}>LINEで予約をはじめる</h3>
+          <h3 style={{ marginTop: 14, marginBottom: 10, fontSize: 34, letterSpacing: "-0.04em" }}>LINEで予約</h3>
           <p className="muted">
-            お店に聞きたいことがあるときも、空き状況を確認したいときも、まずはここから気軽に送れます。
+            空き状況の確認や質問も、LINEで気軽に。
           </p>
           <div className="public-tag-row" style={{ marginBottom: 20 }}>
-            <span className={getPublicPillClassName("いいねであとで見返せる", "public-inline-icon")}><HeartIcon />いいねであとで見返せる</span>
-            <span className={getPublicPillClassName("おすすめ時間 19:00-20:00", "public-inline-icon")}><ClockIcon />おすすめ時間 19:00-20:00</span>
-            <span className={getPublicPillClassName("近くのお店も見直せる")}>近くのお店も見直せる</span>
+            <span className={getPublicPillClassName("あとで見返す", "public-inline-icon")}><HeartIcon />あとで見返す</span>
+            <span className={getPublicPillClassName("19:00-20:00", "public-inline-icon")}><ClockIcon />19:00-20:00</span>
           </div>
           <div className="timeline" style={{ background: "transparent", borderColor: "rgba(255,255,255,0.08)", boxShadow: "none" }}>
             <div className="timeline-step" style={{ borderColor: "rgba(255,255,255,0.08)" }}>
               <strong>1. 送る</strong>
-              <span className="muted">希望の時間やメニューをLINEで送ります。</span>
+              <span className="muted">希望の時間・メニューをLINEで送信。</span>
             </div>
             <div className="timeline-step" style={{ borderColor: "rgba(255,255,255,0.08)" }}>
               <strong>2. 返事を待つ</strong>
-              <span className="muted">お店からの返事で空き状況や候補時間を確認できます。</span>
+              <span className="muted">お店から空き状況の返事が届きます。</span>
             </div>
             <div className="timeline-step" style={{ borderColor: "rgba(255,255,255,0.08)" }}>
               <strong>3. 決める</strong>
-              <span className="muted">空いていれば予約へ。合わなければ別時間やほかのお店も見られます。</span>
+              <span className="muted">空きがあれば予約確定。なければ別候補へ。</span>
             </div>
           </div>
           <div className="public-action-row" style={{ marginTop: 18 }}>
             <Link className="public-primary" href={lineEntryHref}>
-              LINEで空き状況を聞く
+              LINEで確認する
             </Link>
             <Link className="public-secondary" href={backHref}>
               一覧へ戻る

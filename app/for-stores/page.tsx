@@ -11,7 +11,7 @@ export default function ForStoresPage() {
           <div className="public-address">
             <div>
               <div className="caption">掲載店向け</div>
-              <strong>掲載・LINE導線・same-day運用の案内</strong>
+              <strong>掲載プラン案内</strong>
             </div>
             <div className="public-tag-row">
               <span className="public-pill">月額固定ベース</span>
@@ -25,9 +25,9 @@ export default function ForStoresPage() {
 
         <section className="public-collection-header">
           <span className="public-kicker">For Stores</span>
-          <h1 className="public-collection-title">掲載店向けの運用プラン</h1>
+          <h1 className="public-collection-title">掲載プラン</h1>
           <p className="public-lead" style={{ maxWidth: "48ch" }}>
-            掲載だけでなく、LINE相談導線、same-day反映、固定URL強化までを段階的に整えるための基本案内です。
+            掲載・LINE導線・same-day運用を段階的に整える3プラン。
           </p>
           <div className="public-divider" />
         </section>
@@ -37,7 +37,7 @@ export default function ForStoresPage() {
             <div>
               <span className="public-kicker">Plans</span>
               <h2 className="section-title">月額固定の3プラン</h2>
-              <p className="public-section-copy">予約手数料ではなく、運用の整備範囲で分けたシンプルな構成にしています。</p>
+              <p className="public-section-copy">手数料なし。運用範囲で選べるシンプル構成。</p>
             </div>
           </div>
           <div className="public-plan-grid">
@@ -62,9 +62,9 @@ export default function ForStoresPage() {
           <div className="public-section-head">
             <div>
               <span className="public-kicker">Badge</span>
-              <h2 className="section-title">掲載店バッジの使い方</h2>
+              <h2 className="section-title">掲載店バッジ</h2>
               <p className="public-section-copy">
-                店舗サイトやSNSプロフィールに貼る紹介導線として使い、検索順位の操作ではなく信頼表示として扱います。
+                店舗サイトやSNSに貼る信頼表示バッジ。
               </p>
             </div>
           </div>
@@ -72,7 +72,7 @@ export default function ForStoresPage() {
             <div className="public-badge-card">
               <span className="public-badge-label">LocaGoX 掲載店</span>
               <strong>LINE相談しやすい掲載店</strong>
-              <span className="muted">店舗詳細・固定URL・紹介導線をひとつの入口にまとめるための表示です。</span>
+              <span className="muted">店舗詳細・固定URL・紹介導線をまとめた入口表示。</span>
             </div>
             <div className="public-badge-copy">
               <h3>使いどころ</h3>

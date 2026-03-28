@@ -58,10 +58,10 @@ export function FavoritesRail({ stores }: { stores: FavoriteStore[] }) {
         <div>
           <span className="public-kicker">Favorites</span>
           <h2 className="section-title">いいねしたお店</h2>
-          <p className="public-section-copy">気になったお店をあとで見返しやすいように、ここへまとめています。</p>
+          <p className="public-section-copy">保存したお店をまとめて確認。</p>
         </div>
       </div>
-      <div className="favorite-mini-grid">
+      <div className="favorite-mini-grid favorite-mini-grid-mobile-rail">
         {favoriteStores.map((store) => (
           <Link className="favorite-mini-card" href={`/stores/${store.slug}?source=home.discovery_shelf&shelf=favorites&scroll=0`} key={store.id}>
             <div className="favorite-mini-top">

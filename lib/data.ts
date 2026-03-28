@@ -12,7 +12,9 @@ import {
   getMockRelatedStores,
   getMockStoreById,
   getMockStoreBySlug,
-  getMockStoreSlugs
+  getMockStoreSlugs,
+  getMockCategoryRows,
+  getMockAreaRows
 } from "@/lib/mock-data";
 import { isMockModeEnabled } from "@/lib/mock-mode";
 
@@ -315,4 +317,12 @@ export async function getAllStoreSlugs() {
   });
 
   return stores.map((store) => store.slug);
+}
+
+export function getCategoryRows() {
+  return getMockCategoryRows();
+}
+
+export function getAreaRows() {
+  return getMockAreaRows();
 }

@@ -54,8 +54,8 @@ export default async function AreaCategoryPage({
             </strong>
           </div>
           <div className="public-tag-row">
-            <span className={getPublicPillClassName("エリアで見つける", "public-inline-icon")}><CompassIcon />エリアで見つける</span>
-            <span className={getPublicPillClassName("いつでも見返せる一覧", "public-inline-icon")}><ListIcon />いつでも見返せる一覧</span>
+            <span className={getPublicPillClassName("エリア検索", "public-inline-icon")}><CompassIcon />エリア検索</span>
+            <span className={getPublicPillClassName("一覧", "public-inline-icon")}><ListIcon />一覧</span>
           </div>
         </div>
         <Link className="public-link" href="/">
@@ -67,7 +67,7 @@ export default async function AreaCategoryPage({
         <span className="public-kicker">Area Guide</span>
         <h1 className="public-collection-title">{view.area}で今行ける{view.category}</h1>
         <p className="public-lead" style={{ maxWidth: "48ch" }}>
-          気になるエリアから、今見ておきたいお店をまとめてチェックできます。あとでゆっくり見返したいときにも便利です。
+          エリアで探して、気になるお店をチェック。
         </p>
         <div className="public-divider" />
       </section>
@@ -77,7 +77,7 @@ export default async function AreaCategoryPage({
           <div>
             <span className="public-kicker">Store Picks</span>
             <h2 className="section-title">候補一覧</h2>
-            <p className="public-section-copy">気になるお店を見つけたら、そのまま詳細ページでメニューや空き状況を確認できます。</p>
+            <p className="public-section-copy">気になるお店をタップして詳細・空き状況を確認。</p>
           </div>
         </div>
         <div className="public-card-grid">
