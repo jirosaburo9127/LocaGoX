@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { buildBookingSession, createBookingSessionSchema } from "@/lib/booking";
 import { db } from "@/lib/db";
 import { getStoreById } from "@/lib/data";
+import { isMockModeEnabled } from "@/lib/mock-mode";
 
 export async function GET(request: NextRequest) {
   const url = request.nextUrl;
@@ -60,6 +61,23 @@ export async function GET(request: NextRequest) {
       },
       { status: 409 }
     );
+  }
+
+  if (isMockModeEnabled()) {
+    return NextResponse.json({
+      bookingSession: {
+        ...session,
+        id: session.id,
+        returnToken: session.returnToken
+      },
+      lineLaunch: {
+        type: "official_line_reservation_core",
+        message: `【LocaGoX Mock】${store.name} / ${parsed.data.menuHint} / 希望 ${parsed.data.preferredWindow} / ETA 約${parsed.data.etaMinutes}分`,
+        returnToken: session.returnToken
+      },
+      nextAction: "launch_official_line",
+      mockMode: true
+    });
   }
 
   const navigationContext = await db.navigationContext.create({

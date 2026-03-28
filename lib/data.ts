@@ -7,6 +7,14 @@ import type {
   QualityStateViewModel,
   Store
 } from "@/lib/domain";
+import {
+  getMockHomeView,
+  getMockRelatedStores,
+  getMockStoreById,
+  getMockStoreBySlug,
+  getMockStoreSlugs
+} from "@/lib/mock-data";
+import { isMockModeEnabled } from "@/lib/mock-mode";
 
 const defaultLocationLabel = "渋谷区恵比寿西 1-9 付近";
 
@@ -111,6 +119,10 @@ async function fetchStores() {
 }
 
 export async function getHomeView(): Promise<HomeViewModel> {
+  if (isMockModeEnabled()) {
+    return getMockHomeView();
+  }
+
   const stores = await db.store.findMany({
     include: {
       statusSnapshots: {
@@ -236,6 +248,10 @@ export function getPricingPlans(): PricingPlan[] {
 }
 
 export async function getStoreBySlug(slug: string): Promise<Store | null> {
+  if (isMockModeEnabled()) {
+    return getMockStoreBySlug(slug);
+  }
+
   const store = await db.store.findUnique({
     where: {
       slug
@@ -254,6 +270,10 @@ export async function getStoreBySlug(slug: string): Promise<Store | null> {
 }
 
 export async function getStoreById(id: string): Promise<Store | null> {
+  if (isMockModeEnabled()) {
+    return getMockStoreById(id);
+  }
+
   const store = await db.store.findUnique({
     where: {
       id
@@ -272,6 +292,10 @@ export async function getStoreById(id: string): Promise<Store | null> {
 }
 
 export async function getRelatedStores(store: Store): Promise<Store[]> {
+  if (isMockModeEnabled()) {
+    return getMockRelatedStores(store);
+  }
+
   const stores = await fetchStores();
 
   return stores
@@ -280,6 +304,10 @@ export async function getRelatedStores(store: Store): Promise<Store[]> {
 }
 
 export async function getAllStoreSlugs() {
+  if (isMockModeEnabled()) {
+    return getMockStoreSlugs();
+  }
+
   const stores = await db.store.findMany({
     select: {
       slug: true

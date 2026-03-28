@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { formatReliabilityReason, getStoreBoardView } from "@/lib/store-board";
+import { isMockModeEnabled } from "@/lib/mock-mode";
 
 function formatTime(iso: string) {
   return new Intl.DateTimeFormat("ja-JP", {
@@ -11,6 +12,28 @@ function formatTime(iso: string) {
 }
 
 export default async function StoreBoardPage() {
+  if (isMockModeEnabled()) {
+    return (
+      <main className="page-shell">
+        <section className="panel" style={{ maxWidth: 860, margin: "40px auto" }}>
+          <span className="eyebrow">Mock Preview</span>
+          <h1 className="section-title">Store Board はモックモードでは停止中です</h1>
+          <p className="muted">
+            今回の Vercel Preview は公開面を見せる用途に絞っているため、運用画面は Supabase 接続時のみ有効です。
+          </p>
+          <div className="pill-row" style={{ marginTop: 16 }}>
+            <Link className="link-chip" href="/">
+              公開Homeへ戻る
+            </Link>
+            <Link className="link-chip" href="/ops/line-setup">
+              LINE Setup を見る
+            </Link>
+          </div>
+        </section>
+      </main>
+    );
+  }
+
   const board = await getStoreBoardView();
 
   return (

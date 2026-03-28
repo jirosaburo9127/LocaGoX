@@ -2,6 +2,8 @@ import { cache } from "react";
 import { db } from "@/lib/db";
 import type { Store } from "@/lib/domain";
 import { getStoreBySlug } from "@/lib/data";
+import { getMockAreaCategoryStaticParams, getMockAreaCategoryView } from "@/lib/mock-data";
+import { isMockModeEnabled } from "@/lib/mock-mode";
 
 export function toCatalogSegment(value: string) {
   return value.trim().toLowerCase().replaceAll(/\s+/g, "-");
@@ -18,6 +20,10 @@ type AreaCategoryView = {
 };
 
 export const getAreaCategoryStaticParams = cache(async () => {
+  if (isMockModeEnabled()) {
+    return getMockAreaCategoryStaticParams();
+  }
+
   const stores = await db.store.findMany({
     select: {
       area: true,
@@ -45,6 +51,10 @@ export const getAreaCategoryStaticParams = cache(async () => {
 });
 
 export const getAreaCategoryView = cache(async (areaSegment: string, categorySegment: string) => {
+  if (isMockModeEnabled()) {
+    return getMockAreaCategoryView(areaSegment, categorySegment);
+  }
+
   const stores = await db.store.findMany({
     select: {
       slug: true,

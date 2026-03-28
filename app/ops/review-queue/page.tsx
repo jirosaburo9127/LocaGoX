@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { isMockModeEnabled } from "@/lib/mock-mode";
 import { getReviewQueueView } from "@/lib/review-queue";
 
 function formatTime(iso: string) {
@@ -11,6 +12,28 @@ function formatTime(iso: string) {
 }
 
 export default async function ReviewQueuePage() {
+  if (isMockModeEnabled()) {
+    return (
+      <main className="page-shell">
+        <section className="panel" style={{ maxWidth: 860, margin: "40px auto" }}>
+          <span className="eyebrow">Mock Preview</span>
+          <h1 className="section-title">Review Queue はモックモードでは停止中です</h1>
+          <p className="muted">
+            Preview では公開面の確認を優先しているため、競合解決キューは Supabase 接続時のみ有効です。
+          </p>
+          <div className="pill-row" style={{ marginTop: 16 }}>
+            <Link className="link-chip" href="/">
+              公開Homeへ戻る
+            </Link>
+            <Link className="link-chip" href="/ops/line-setup">
+              LINE Setup を見る
+            </Link>
+          </div>
+        </section>
+      </main>
+    );
+  }
+
   const items = await getReviewQueueView();
 
   return (
