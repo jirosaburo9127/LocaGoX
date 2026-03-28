@@ -1,0 +1,170 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+enum QualitySegment {
+  green
+  amber
+  orange
+  red
+}
+
+enum BookingSessionState {
+  draft
+  line_launched
+  message_prefilled
+  waiting_store_reply
+  accepted
+  alternate_time_proposed
+  full
+  timeout
+  rejected
+  review_required
+}
+
+enum OutcomeSource {
+  official_line_reservation_core
+  manual_fallback
+  ops_override
+}
+
+model User {
+  id                String             @id @default(cuid())
+  lineUserId        String?            @unique
+  displayName       String?
+  qualitySegment    QualitySegment     @default(green)
+  sameDayState      String             @default("normal")
+  recoveryState     String?
+  stateExpiresAt    DateTime?
+  locationContexts  NavigationContext[]
+  bookingSessions   BookingSession[]
+  createdAt         DateTime           @default(now())
+  updatedAt         DateTime           @updatedAt
+}
+
+model Store {
+  id                     String             @id @default(cuid())
+  slug                   String             @unique
+  name                   String
+  area                   String
+  category               String
+  walkMinutes            Int
+  lastOrderAt            String
+  isOpen                 Boolean            @default(true)
+  heroCopy               String
+  benefitTags            String[]
+  faq                    String[]
+  menuHighlights         String[]
+  relatedStoreSlugs      String[]
+  heroRank               Int                @default(100)
+  reservationRank        Int                @default(100)
+  discoveryRank          Int                @default(100)
+  patentReviewSetId      String?
+  reliabilityState       String             @default("healthy")
+  reliabilityMode        String             @default("auto")
+  reliabilityReason      String?
+  reliabilityEvidence    Json?
+  reliabilityUpdatedAt   DateTime?
+  replySlaSnapshot       String?
+  staleCounter           Int                @default(0)
+  statusSnapshots        StoreStatusSnapshot[]
+  bookingSessions        BookingSession[]
+  createdAt              DateTime           @default(now())
+  updatedAt              DateTime           @updatedAt
+}
+
+model NavigationContext {
+  id             String   @id @default(cuid())
+  userId         String?
+  sourceSurface  String
+  shelfId        String
+  scrollY        Int
+  locationLabel  String
+  filterState    Json
+  signedToken    String   @unique
+  expiresAt      DateTime
+  createdAt      DateTime @default(now())
+  user           User?    @relation(fields: [userId], references: [id])
+}
+
+model BookingSession {
+  id                   String              @id @default(cuid())
+  userId               String?
+  storeId              String
+  state                BookingSessionState @default(draft)
+  sourceSurface        String
+  preferredWindow      String
+  etaMinutes           Int?
+  menuHint             String?
+  returnToken          String
+  dedupeKey            String?             @unique
+  user                 User?               @relation(fields: [userId], references: [id])
+  store                Store               @relation(fields: [storeId], references: [id])
+  outcomes             BookingOutcome[]
+  reviewItems          ReviewQueueItem[]
+  createdAt            DateTime            @default(now())
+  updatedAt            DateTime            @updatedAt
+}
+
+model BookingOutcome {
+  id                   String              @id @default(cuid())
+  bookingSessionId     String
+  state                BookingSessionState
+  source               OutcomeSource
+  confirmationOrigin   String?
+  callbackEventId      String?
+  reasonCode           String
+  evidenceRef          String?
+  occurredAt           DateTime            @default(now())
+  bookingSession       BookingSession      @relation(fields: [bookingSessionId], references: [id])
+}
+
+model StoreStatusSnapshot {
+  id                   String   @id @default(cuid())
+  storeId              String
+  acceptingSameDay     Boolean  @default(true)
+  waitMinutes          Int?
+  nextAvailableWindow  String?
+  note                 String?
+  updatedBy            String?
+  createdAt            DateTime @default(now())
+  store                Store    @relation(fields: [storeId], references: [id])
+}
+
+model AuditLog {
+  id                String   @id @default(cuid())
+  actorId           String?
+  actorRole         String
+  targetType        String
+  targetId          String
+  action            String
+  beforeState       Json?
+  afterState        Json?
+  reasonCode        String?
+  evidenceRef       String?
+  reviewer          String?
+  expiry            DateTime?
+  policyVersion     String?
+  createdAt         DateTime @default(now())
+}
+
+model ReviewQueueItem {
+  id                String              @id @default(cuid())
+  bookingSessionId  String
+  reasonCode        String
+  payload           Json?
+  status            String              @default("open")
+  resolvedState     BookingSessionState?
+  resolutionNote    String?
+  resolvedBy        String?
+  resolvedAt        DateTime?
+  createdAt         DateTime            @default(now())
+  updatedAt         DateTime            @updatedAt
+  bookingSession    BookingSession      @relation(fields: [bookingSessionId], references: [id])
+}
