@@ -1166,6 +1166,27 @@ button, input { font: inherit; }
   color: var(--muted);
 }
 
+.fb-result-group {
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  flex-direction: row;
+  gap: 4px;
+}
+
+.fb-result-num {
+  font-size: 28px;
+  font-weight: 800;
+  color: var(--accent);
+  line-height: 1;
+}
+
+.fb-result-label {
+  font-size: 12px;
+  color: var(--muted);
+  font-weight: 600;
+}
+
 .sd-section {
   padding-top: 8px;
 }
