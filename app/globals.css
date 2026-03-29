@@ -1063,6 +1063,131 @@ button, input { font: inherit; }
    Swipe Deck (Tinder-style)
    ================================================ */
 
+/* ================================================
+   Category Picker
+   ================================================ */
+
+.cp-container {
+  padding: 24px 16px 32px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  min-height: 60vh;
+}
+
+.cp-header {
+  text-align: center;
+}
+
+.cp-title {
+  margin: 0;
+  font-size: clamp(22px, 5.5vw, 30px);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+}
+
+.cp-sub {
+  margin: 6px 0 0;
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.cp-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  width: 100%;
+  max-width: 420px;
+}
+
+.cp-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 18px 8px 14px;
+  border-radius: 16px;
+  border: 1px solid rgba(27, 23, 19, 0.08);
+  background: rgba(255, 255, 255, 0.7);
+  cursor: pointer;
+  transition: transform 150ms var(--ease), box-shadow 150ms var(--ease), border-color 150ms var(--ease);
+}
+
+.cp-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-md);
+  border-color: var(--accent);
+}
+
+.cp-card:active {
+  transform: scale(0.95) !important;
+}
+
+.cp-icon {
+  font-size: 28px;
+  line-height: 1;
+}
+
+.cp-name {
+  font-size: 13px;
+  font-weight: 700;
+  text-align: center;
+  line-height: 1.2;
+}
+
+.cp-count {
+  font-size: 11px;
+  color: var(--muted);
+}
+
+.cp-all {
+  padding: 14px 32px;
+  border-radius: 12px;
+  border: 1px solid rgba(27, 23, 19, 0.12);
+  background: rgba(255, 255, 255, 0.8);
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 150ms var(--ease), transform 150ms var(--ease);
+}
+
+.cp-all:hover {
+  background: white;
+}
+
+.cp-all:active {
+  transform: scale(0.96);
+}
+
+/* Category bar above swipe deck */
+
+.sd-cat-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 16px;
+}
+
+.sd-cat-back {
+  background: none;
+  border: 0;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--accent);
+  cursor: pointer;
+  padding: 6px 0;
+}
+
+.sd-cat-back:active {
+  opacity: 0.6;
+}
+
+.sd-cat-label {
+  font-size: 14px;
+  font-weight: 700;
+}
+
 .sd-section {
   padding-top: 8px;
 }

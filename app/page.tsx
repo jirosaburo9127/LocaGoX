@@ -59,11 +59,10 @@ export default async function HomePage() {
     walkMinutes: s.walkMinutes, isOpen: s.isOpen, imgIndex: i
   }));
 
-  // Swipe deck: top 15 nearest open stores
+  // Swipe deck: all open stores (filtered by category on client)
   const swipeStores = uniqueStores
     .filter((s) => s.isOpen)
     .sort((a, b) => a.walkMinutes - b.walkMinutes)
-    .slice(0, 15)
     .map((s, i) => ({
       slug: s.slug, name: s.name, area: s.area, category: s.category,
       walkMinutes: s.walkMinutes, waitMinutes: s.waitMinutes,

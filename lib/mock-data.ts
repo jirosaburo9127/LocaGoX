@@ -528,6 +528,177 @@ const mockStores: Store[] = [
     menuHighlights: ["60分 鍼灸施術 ¥6,600", "40分 お灸コース ¥4,400", "80分 全身鍼灸 ¥8,800"],
     relatedStoreSlugs: ["ichiki-ikejiri", "reraku-ikejiri"], reliabilityState: "healthy", reliabilityMode: "mock", reliabilityReason: "mock_preview_mode",
     reliabilityEvidence: null, reliabilityUpdatedAt: null, replySlaSnapshot: "通常5分以内", badgeLabel: "LINE相談しやすい掲載店"
+  },
+  // ===== 飲食店（居酒屋・レストラン・カフェ） =====
+  {
+    id: "mock-ebisu-yokocho", slug: "ebisu-yokocho", name: "恵比寿横丁", area: "恵比寿", category: "居酒屋",
+    walkMinutes: 2, waitMinutes: 15, lastOrderAt: "翌3:00", isOpen: true,
+    benefitTags: ["はしご酒", "20店舗入居", "深夜営業"],
+    heroCopy: "20店舗が集まるはしご酒の聖地。",
+    faq: ["各店舗ごとに注文です。", "予約は各店舗に直接。"],
+    menuHighlights: ["串焼き盛り合わせ", "刺身5点盛り", "もつ煮込み"],
+    relatedStoreSlugs: ["ebisu-shichirin", "ebisu-robata"], reliabilityState: "healthy", reliabilityMode: "mock", reliabilityReason: "mock_preview_mode",
+    reliabilityEvidence: null, reliabilityUpdatedAt: null, replySlaSnapshot: "通常5分以内", badgeLabel: "LINE相談しやすい掲載店"
+  },
+  {
+    id: "mock-ebisu-shichirin", slug: "ebisu-shichirin", name: "七輪焼肉 安安 恵比寿店", area: "恵比寿", category: "焼肉",
+    walkMinutes: 3, waitMinutes: 20, lastOrderAt: "翌4:00", isOpen: true,
+    benefitTags: ["食べ放題", "深夜OK", "コスパ◎"],
+    heroCopy: "食べ放題2,980円〜。深夜4時まで営業。",
+    faq: ["食べ放題は90分制です。", "ドリンクは別注文です。"],
+    menuHighlights: ["食べ放題 ¥2,980", "特選カルビ", "冷麺"],
+    relatedStoreSlugs: ["ebisu-yokocho", "shibuya-yakiniku"], reliabilityState: "healthy", reliabilityMode: "mock", reliabilityReason: "mock_preview_mode",
+    reliabilityEvidence: null, reliabilityUpdatedAt: null, replySlaSnapshot: "通常5分以内", badgeLabel: "LINE相談しやすい掲載店"
+  },
+  {
+    id: "mock-ebisu-robata", slug: "ebisu-robata", name: "炉端焼 いろり 恵比寿", area: "恵比寿", category: "居酒屋",
+    walkMinutes: 4, waitMinutes: 10, lastOrderAt: "23:00", isOpen: true,
+    benefitTags: ["炉端焼き", "個室あり", "日本酒豊富"],
+    heroCopy: "目の前で焼き上げる炉端焼きの名店。",
+    faq: ["個室は4名〜要予約です。", "コース料理は前日まで。"],
+    menuHighlights: ["炉端焼き盛り合わせ", "釜飯", "日本酒飲み比べ"],
+    relatedStoreSlugs: ["ebisu-yokocho", "nakameguro-izakaya"], reliabilityState: "healthy", reliabilityMode: "mock", reliabilityReason: "mock_preview_mode",
+    reliabilityEvidence: null, reliabilityUpdatedAt: null, replySlaSnapshot: "通常5分以内", badgeLabel: "LINE相談しやすい掲載店"
+  },
+  {
+    id: "mock-ebisu-italian", slug: "ebisu-italian", name: "トラットリア ダル・ビルバンテ", area: "恵比寿", category: "イタリアン",
+    walkMinutes: 5, waitMinutes: 10, lastOrderAt: "22:00", isOpen: true,
+    benefitTags: ["本格イタリアン", "ワイン充実", "デート向き"],
+    heroCopy: "恵比寿の隠れ家イタリアン。手打ちパスタが自慢。",
+    faq: ["コース料理は2名〜。", "アレルギー対応可能です。"],
+    menuHighlights: ["手打ちパスタ ¥1,800", "窯焼きピザ ¥1,600", "ティラミス ¥800"],
+    relatedStoreSlugs: ["daikanyama-french", "ebisu-robata"], reliabilityState: "healthy", reliabilityMode: "mock", reliabilityReason: "mock_preview_mode",
+    reliabilityEvidence: null, reliabilityUpdatedAt: null, replySlaSnapshot: "通常10分以内", badgeLabel: "LINE相談しやすい掲載店"
+  },
+  {
+    id: "mock-ebisu-cafe", slug: "ebisu-cafe", name: "猿田彦珈琲 恵比寿本店", area: "恵比寿", category: "カフェ",
+    walkMinutes: 1, waitMinutes: 5, lastOrderAt: "20:00", isOpen: true,
+    benefitTags: ["スペシャルティ珈琲", "駅近1分", "テイクアウト"],
+    heroCopy: "恵比寿発のスペシャルティコーヒー専門店。",
+    faq: ["豆の購入もできます。", "Wi-Fiあります。"],
+    menuHighlights: ["猿田彦ブレンド ¥500", "カフェラテ ¥600", "プリン ¥450"],
+    relatedStoreSlugs: ["nakameguro-cafe", "daikanyama-cafe"], reliabilityState: "healthy", reliabilityMode: "mock", reliabilityReason: "mock_preview_mode",
+    reliabilityEvidence: null, reliabilityUpdatedAt: null, replySlaSnapshot: "通常5分以内", badgeLabel: "LINE相談しやすい掲載店"
+  },
+  {
+    id: "mock-nakameguro-izakaya", slug: "nakameguro-izakaya", name: "中目黒 いぐち", area: "中目黒", category: "居酒屋",
+    walkMinutes: 3, waitMinutes: 20, lastOrderAt: "23:30", isOpen: true,
+    benefitTags: ["予約困難", "日本酒", "和食創作"],
+    heroCopy: "予約が取れない人気の創作和食居酒屋。",
+    faq: ["予約は1ヶ月前から。", "コースのみの営業日あり。"],
+    menuHighlights: ["おまかせコース ¥6,600", "〆の土鍋ご飯", "季節の刺身"],
+    relatedStoreSlugs: ["ebisu-robata", "nakameguro-ramen"], reliabilityState: "caution", reliabilityMode: "mock", reliabilityReason: "mock_preview_mode",
+    reliabilityEvidence: null, reliabilityUpdatedAt: null, replySlaSnapshot: "通常15分以内", badgeLabel: "確認しながら案内中"
+  },
+  {
+    id: "mock-nakameguro-cafe", slug: "nakameguro-cafe", name: "Onibus Coffee 中目黒", area: "中目黒", category: "カフェ",
+    walkMinutes: 4, waitMinutes: 5, lastOrderAt: "18:00", isOpen: true,
+    benefitTags: ["ロースタリー", "目黒川沿い", "テラス席"],
+    heroCopy: "目黒川沿いのロースタリーカフェ。",
+    faq: ["テラス席はペットOKです。", "豆の販売もあります。"],
+    menuHighlights: ["ドリップコーヒー ¥450", "フラットホワイト ¥550", "マフィン ¥350"],
+    relatedStoreSlugs: ["ebisu-cafe", "daikanyama-cafe"], reliabilityState: "healthy", reliabilityMode: "mock", reliabilityReason: "mock_preview_mode",
+    reliabilityEvidence: null, reliabilityUpdatedAt: null, replySlaSnapshot: "通常5分以内", badgeLabel: "LINE相談しやすい掲載店"
+  },
+  {
+    id: "mock-nakameguro-ramen", slug: "nakameguro-ramen", name: "AFURI 中目黒", area: "中目黒", category: "ラーメン",
+    walkMinutes: 2, waitMinutes: 15, lastOrderAt: "翌1:00", isOpen: true,
+    benefitTags: ["柚子塩ラーメン", "深夜OK", "行列人気"],
+    heroCopy: "柚子塩ラーメンで全国に名を馳せる人気店。",
+    faq: ["食券制です。", "つけ麺もあります。"],
+    menuHighlights: ["柚子塩らーめん ¥1,080", "つけ麺 ¥1,180", "チャーシュー丼 ¥400"],
+    relatedStoreSlugs: ["shibuya-ramen", "nakameguro-izakaya"], reliabilityState: "healthy", reliabilityMode: "mock", reliabilityReason: "mock_preview_mode",
+    reliabilityEvidence: null, reliabilityUpdatedAt: null, replySlaSnapshot: "通常5分以内", badgeLabel: "LINE相談しやすい掲載店"
+  },
+  {
+    id: "mock-shibuya-yakiniku", slug: "shibuya-yakiniku", name: "焼肉トラジ 渋谷店", area: "渋谷", category: "焼肉",
+    walkMinutes: 4, waitMinutes: 25, lastOrderAt: "23:00", isOpen: true,
+    benefitTags: ["黒毛和牛", "個室あり", "接待向き"],
+    heroCopy: "黒毛和牛にこだわる本格焼肉。",
+    faq: ["個室は2名〜予約可能です。", "アレルギー対応あり。"],
+    menuHighlights: ["特選和牛盛り ¥4,980", "トラジ御膳 ¥2,480", "冷麺 ¥1,280"],
+    relatedStoreSlugs: ["ebisu-shichirin", "shibuya-sushi"], reliabilityState: "healthy", reliabilityMode: "mock", reliabilityReason: "mock_preview_mode",
+    reliabilityEvidence: null, reliabilityUpdatedAt: null, replySlaSnapshot: "通常10分以内", badgeLabel: "LINE相談しやすい掲載店"
+  },
+  {
+    id: "mock-shibuya-sushi", slug: "shibuya-sushi", name: "すし匠 渋谷店", area: "渋谷", category: "寿司",
+    walkMinutes: 6, waitMinutes: 30, lastOrderAt: "22:00", isOpen: true,
+    benefitTags: ["おまかせ", "カウンター", "ミシュラン"],
+    heroCopy: "カウンターで味わう本格江戸前鮨。",
+    faq: ["おまかせのみです。", "予約は電話のみ。"],
+    menuHighlights: ["おまかせ ¥15,000", "追加握り 時価", "日本酒ペアリング ¥5,000"],
+    relatedStoreSlugs: ["shibuya-yakiniku", "daikanyama-french"], reliabilityState: "caution", reliabilityMode: "mock", reliabilityReason: "mock_preview_mode",
+    reliabilityEvidence: null, reliabilityUpdatedAt: null, replySlaSnapshot: "通常15分以内", badgeLabel: "確認しながら案内中"
+  },
+  {
+    id: "mock-shibuya-ramen", slug: "shibuya-ramen", name: "中華そば 渋谷 三丁目", area: "渋谷", category: "ラーメン",
+    walkMinutes: 3, waitMinutes: 20, lastOrderAt: "22:30", isOpen: true,
+    benefitTags: ["煮干し系", "行列必至", "限定メニュー"],
+    heroCopy: "濃厚煮干しスープが癖になる人気ラーメン店。",
+    faq: ["食券制です。", "並びは店外でお願いします。"],
+    menuHighlights: ["特濃煮干しそば ¥980", "つけそば ¥1,050", "和え玉 ¥200"],
+    relatedStoreSlugs: ["nakameguro-ramen", "shibuya-yakiniku"], reliabilityState: "healthy", reliabilityMode: "mock", reliabilityReason: "mock_preview_mode",
+    reliabilityEvidence: null, reliabilityUpdatedAt: null, replySlaSnapshot: "通常5分以内", badgeLabel: "LINE相談しやすい掲載店"
+  },
+  {
+    id: "mock-daikanyama-french", slug: "daikanyama-french", name: "レストラン パッション", area: "代官山", category: "フレンチ",
+    walkMinutes: 5, waitMinutes: 0, lastOrderAt: "21:00", isOpen: true,
+    benefitTags: ["記念日", "コース料理", "ソムリエ常駐"],
+    heroCopy: "記念日に最適な本格フレンチレストラン。",
+    faq: ["ドレスコードはスマートカジュアル。", "サプライズ演出可能です。"],
+    menuHighlights: ["ランチコース ¥3,800", "ディナーコース ¥8,800", "デザートコース ¥2,800"],
+    relatedStoreSlugs: ["ebisu-italian", "shibuya-sushi"], reliabilityState: "healthy", reliabilityMode: "mock", reliabilityReason: "mock_preview_mode",
+    reliabilityEvidence: null, reliabilityUpdatedAt: null, replySlaSnapshot: "通常10分以内", badgeLabel: "LINE相談しやすい掲載店"
+  },
+  {
+    id: "mock-daikanyama-cafe", slug: "daikanyama-cafe", name: "IVY PLACE", area: "代官山", category: "カフェ",
+    walkMinutes: 3, waitMinutes: 10, lastOrderAt: "21:00", isOpen: true,
+    benefitTags: ["テラス席", "ブランチ", "おしゃれ空間"],
+    heroCopy: "代官山T-SITE隣のおしゃれカフェダイニング。",
+    faq: ["テラス席は予約不可です。", "ランチは11:30〜。"],
+    menuHighlights: ["パンケーキ ¥1,400", "アボカドトースト ¥1,200", "グリルチキン ¥1,800"],
+    relatedStoreSlugs: ["nakameguro-cafe", "ebisu-cafe"], reliabilityState: "healthy", reliabilityMode: "mock", reliabilityReason: "mock_preview_mode",
+    reliabilityEvidence: null, reliabilityUpdatedAt: null, replySlaSnapshot: "通常5分以内", badgeLabel: "LINE相談しやすい掲載店"
+  },
+  {
+    id: "mock-jiyugaoka-sweets", slug: "jiyugaoka-sweets", name: "モンサンクレール", area: "自由が丘", category: "スイーツ",
+    walkMinutes: 3, waitMinutes: 15, lastOrderAt: "19:00", isOpen: true,
+    benefitTags: ["パティシエ辻口", "手土産", "テイクアウト"],
+    heroCopy: "辻口博啓シェフの人気パティスリー。",
+    faq: ["イートインは4席のみです。", "予約不可、並び順です。"],
+    menuHighlights: ["セ・ラ・ヴィ ¥680", "モンブラン ¥720", "焼菓子セット ¥1,800"],
+    relatedStoreSlugs: ["daikanyama-cafe", "jiyugaoka-pasta"], reliabilityState: "healthy", reliabilityMode: "mock", reliabilityReason: "mock_preview_mode",
+    reliabilityEvidence: null, reliabilityUpdatedAt: null, replySlaSnapshot: "通常5分以内", badgeLabel: "LINE相談しやすい掲載店"
+  },
+  {
+    id: "mock-jiyugaoka-pasta", slug: "jiyugaoka-pasta", name: "La Bohème 自由が丘", area: "自由が丘", category: "イタリアン",
+    walkMinutes: 4, waitMinutes: 10, lastOrderAt: "翌3:00", isOpen: true,
+    benefitTags: ["深夜営業", "テラス", "パスタ充実"],
+    heroCopy: "深夜3時まで営業のカジュアルイタリアン。",
+    faq: ["テラス席はペットOK。", "一人でもカウンター利用可。"],
+    menuHighlights: ["ペスカトーレ ¥1,480", "マルゲリータ ¥1,280", "ティラミス ¥680"],
+    relatedStoreSlugs: ["ebisu-italian", "jiyugaoka-sweets"], reliabilityState: "healthy", reliabilityMode: "mock", reliabilityReason: "mock_preview_mode",
+    reliabilityEvidence: null, reliabilityUpdatedAt: null, replySlaSnapshot: "通常5分以内", badgeLabel: "LINE相談しやすい掲載店"
+  },
+  {
+    id: "mock-sangen-izakaya", slug: "sangen-izakaya", name: "三軒茶屋 まるみ", area: "三軒茶屋", category: "居酒屋",
+    walkMinutes: 2, waitMinutes: 10, lastOrderAt: "23:00", isOpen: true,
+    benefitTags: ["昭和レトロ", "もつ焼き", "安い旨い"],
+    heroCopy: "三茶の昭和レトロもつ焼き酒場。",
+    faq: ["予約不可、並び順です。", "現金のみです。"],
+    menuHighlights: ["もつ焼き5本 ¥500", "ホッピーセット ¥450", "煮込み ¥350"],
+    relatedStoreSlugs: ["ebisu-yokocho", "sangen-curry"], reliabilityState: "healthy", reliabilityMode: "mock", reliabilityReason: "mock_preview_mode",
+    reliabilityEvidence: null, reliabilityUpdatedAt: null, replySlaSnapshot: "通常5分以内", badgeLabel: "LINE相談しやすい掲載店"
+  },
+  {
+    id: "mock-sangen-curry", slug: "sangen-curry", name: "シバカリー ワラ", area: "三軒茶屋", category: "カレー",
+    walkMinutes: 3, waitMinutes: 15, lastOrderAt: "20:30", isOpen: true,
+    benefitTags: ["スパイスカレー", "SNSで話題", "間借り系"],
+    heroCopy: "三茶で人気のスパイスカレー専門店。",
+    faq: ["売り切れ次第終了です。", "テイクアウト可。"],
+    menuHighlights: ["2種あいがけ ¥1,300", "3種あいがけ ¥1,500", "ラッシー ¥400"],
+    relatedStoreSlugs: ["sangen-izakaya", "shibuya-ramen"], reliabilityState: "healthy", reliabilityMode: "mock", reliabilityReason: "mock_preview_mode",
+    reliabilityEvidence: null, reliabilityUpdatedAt: null, replySlaSnapshot: "通常5分以内", badgeLabel: "LINE相談しやすい掲載店"
   }
 ];
 
