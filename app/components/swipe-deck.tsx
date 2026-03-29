@@ -1,6 +1,6 @@
 "use client";
 
-import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useRef, useState } from "react";
 import type { PointerEvent as ReactPointerEvent } from "react";
 
@@ -17,149 +17,163 @@ type SwipeStore = {
   benefitTags: string[];
 };
 
-const SWIPE_THRESHOLD = 100;
-const VELOCITY_THRESHOLD = 0.5;
+const SWIPE_THRESHOLD = 80;
+const TAP_THRESHOLD = 8;
 
-export function SwipeDeck({
-  stores,
-  onFinished
-}: {
-  stores: SwipeStore[];
-  onFinished: () => void;
-}) {
-  const [deck, setDeck] = useState(stores);
+export function SwipeDeck({ stores }: { stores: SwipeStore[] }) {
+  const router = useRouter();
+  const [index, setIndex] = useState(0);
   const [offset, setOffset] = useState({ x: 0, y: 0 });
   const [dragging, setDragging] = useState(false);
-  const [exiting, setExiting] = useState<"left" | "right" | "up" | null>(null);
+  const [exiting, setExiting] = useState<"left" | "right" | null>(null);
+  const [entering, setEntering] = useState(false);
   const startRef = useRef({ x: 0, y: 0, t: 0 });
-  const containerRef = useRef<HTMLDivElement>(null);
+  const moved = useRef(false);
 
-  const current = deck[0];
+  const current = stores[index];
+  const next1 = stores[index + 1];
+  const next2 = stores[index + 2];
+  const finished = index >= stores.length;
 
-  const dismiss = useCallback((dir: "left" | "right" | "up") => {
+  const advance = useCallback((dir: "left" | "right") => {
     setExiting(dir);
     setTimeout(() => {
-      setDeck((prev) => {
-        const next = prev.slice(1);
-        if (next.length === 0) onFinished();
-        return next;
-      });
+      setIndex((i) => i + 1);
       setExiting(null);
       setOffset({ x: 0, y: 0 });
-    }, 300);
-  }, [onFinished]);
+      // Trigger enter animation for new card
+      setEntering(true);
+      setTimeout(() => setEntering(false), 50);
+    }, 250);
+  }, []);
 
   const onPointerDown = (e: ReactPointerEvent) => {
     if (exiting) return;
     setDragging(true);
+    moved.current = false;
     startRef.current = { x: e.clientX, y: e.clientY, t: Date.now() };
     (e.target as HTMLElement).setPointerCapture(e.pointerId);
   };
 
   const onPointerMove = (e: ReactPointerEvent) => {
     if (!dragging || exiting) return;
-    setOffset({
-      x: e.clientX - startRef.current.x,
-      y: e.clientY - startRef.current.y
-    });
+    const dx = e.clientX - startRef.current.x;
+    const dy = e.clientY - startRef.current.y;
+    if (Math.abs(dx) > TAP_THRESHOLD || Math.abs(dy) > TAP_THRESHOLD) {
+      moved.current = true;
+    }
+    // Only horizontal swipe
+    setOffset({ x: dx, y: 0 });
   };
 
-  const onPointerUp = (e: ReactPointerEvent) => {
+  const onPointerUp = () => {
     if (!dragging) return;
     setDragging(false);
 
-    const dt = Date.now() - startRef.current.t;
-    const vx = Math.abs(offset.x) / dt;
-    const vy = offset.y / dt;
+    // Tap → go to detail
+    if (!moved.current && current) {
+      router.push(`/stores/${current.slug}`);
+      return;
+    }
 
-    if (offset.x > SWIPE_THRESHOLD || vx > VELOCITY_THRESHOLD && offset.x > 30) {
-      dismiss("right");
-    } else if (offset.x < -SWIPE_THRESHOLD || vx > VELOCITY_THRESHOLD && offset.x < -30) {
-      dismiss("left");
-    } else if (offset.y < -SWIPE_THRESHOLD || vy < -VELOCITY_THRESHOLD) {
-      dismiss("up");
+    if (offset.x > SWIPE_THRESHOLD) {
+      advance("right");
+    } else if (offset.x < -SWIPE_THRESHOLD) {
+      advance("left");
     } else {
       setOffset({ x: 0, y: 0 });
     }
   };
 
-  // Keyboard support
+  // Keyboard
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === "ArrowRight") dismiss("right");
-      if (e.key === "ArrowLeft") dismiss("left");
-      if (e.key === "ArrowUp") dismiss("up");
+      if (finished) return;
+      if (e.key === "ArrowRight") advance("right");
+      if (e.key === "ArrowLeft") advance("left");
+      if (e.key === "Enter" && current) router.push(`/stores/${current.slug}`);
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [dismiss]);
+  }, [advance, current, finished, router]);
 
-  if (!current) return null;
+  if (finished || !current) {
+    return (
+      <div className="sd-section">
+        <div className="sd-done">
+          <div className="sd-header-badge">完了</div>
+          <p>近くの{stores.length}件をチェックしました</p>
+          <span className="sd-done-sub">下にスクロールでカテゴリ別に探せます ↓</span>
+        </div>
+      </div>
+    );
+  }
 
-  const rotation = offset.x * 0.08;
-  const opacity = Math.min(Math.abs(offset.x) / SWIPE_THRESHOLD, 1);
-  const upOpacity = Math.min(Math.abs(Math.min(offset.y, 0)) / SWIPE_THRESHOLD, 1);
+  const rotation = offset.x * 0.06;
+  const rightOpacity = Math.min(Math.max(offset.x, 0) / SWIPE_THRESHOLD, 1);
+  const leftOpacity = Math.min(Math.max(-offset.x, 0) / SWIPE_THRESHOLD, 1);
 
-  const exitTransform =
-    exiting === "right" ? "translateX(120vw) rotate(20deg)"
-    : exiting === "left" ? "translateX(-120vw) rotate(-20deg)"
-    : exiting === "up" ? "translateY(-120vh)"
-    : undefined;
+  const exitX = exiting === "right" ? "110vw" : exiting === "left" ? "-110vw" : "0";
 
   return (
-    <div className="sd-container" ref={containerRef}>
-      {/* Background cards (next 2) */}
-      {deck.slice(1, 3).map((store, i) => (
-        <div
-          className="sd-card sd-card--bg"
-          key={store.slug}
-          style={{
-            transform: `scale(${0.95 - i * 0.03}) translateY(${(i + 1) * 8}px)`,
-            zIndex: 10 - i
-          }}
-        >
-          <img alt="" className="sd-card-img" src={`/stores/store-${(store.imgIndex % 10) + 1}.jpg`} />
+    <div className="sd-section">
+      <div className="sd-header">
+        <div className="sd-header-badge">今すぐ行ける</div>
+        <h2 className="sd-header-title">近くの{stores.length}件をスワイプ</h2>
+        <p className="sd-header-sub">← スキップ ・ タップで詳細 ・ 気になる →</p>
+      </div>
+    <div className="sd-container">
+      {/* Progress segments */}
+      <div className="sd-segments">
+        {stores.map((_, i) => (
+          <div className={`sd-segment${i < index ? " sd-segment--done" : i === index ? " sd-segment--active" : ""}`} key={i} />
+        ))}
+      </div>
+
+      {/* Background cards */}
+      {next2 && (
+        <div className="sd-card sd-card--bg" style={{ transform: "scale(0.9) translateY(16px)", zIndex: 8 }}>
+          <img alt="" className="sd-card-img" src={`/stores/store-${(next2.imgIndex % 10) + 1}.jpg`} />
           <div className="sd-card-gradient" />
         </div>
-      ))}
+      )}
+      {next1 && (
+        <div className="sd-card sd-card--bg" style={{ transform: "scale(0.95) translateY(8px)", zIndex: 9 }}>
+          <img alt="" className="sd-card-img" src={`/stores/store-${(next1.imgIndex % 10) + 1}.jpg`} />
+          <div className="sd-card-gradient" />
+        </div>
+      )}
 
       {/* Active card */}
       <div
-        className={`sd-card sd-card--active${exiting ? " sd-card--exiting" : ""}`}
+        className={`sd-card sd-card--active${entering ? " sd-card--entering" : ""}`}
+        key={current.slug}
         onPointerDown={onPointerDown}
         onPointerMove={onPointerMove}
         onPointerUp={onPointerUp}
         onPointerCancel={onPointerUp}
         style={{
           transform: exiting
-            ? exitTransform
-            : `translateX(${offset.x}px) translateY(${offset.y}px) rotate(${rotation}deg)`,
-          transition: dragging ? "none" : "transform 300ms cubic-bezier(0.4, 0, 0.2, 1)",
+            ? `translateX(${exitX}) rotate(${exiting === "right" ? 15 : -15}deg)`
+            : `translateX(${offset.x}px) rotate(${rotation}deg)`,
+          transition: dragging ? "none" : "transform 250ms cubic-bezier(0.4, 0, 0.2, 1)",
           zIndex: 20,
-          cursor: dragging ? "grabbing" : "grab",
-          touchAction: "none"
+          cursor: dragging ? "grabbing" : "pointer",
+          touchAction: "pan-y"
         }}
       >
-        <img
-          alt=""
-          className="sd-card-img"
-          src={`/stores/store-${(current.imgIndex % 10) + 1}.jpg`}
-          draggable={false}
-        />
+        <img alt="" className="sd-card-img" src={`/stores/store-${(current.imgIndex % 10) + 1}.jpg`} draggable={false} />
         <div className="sd-card-gradient" />
 
-        {/* Swipe labels */}
-        <div className="sd-label sd-label--right" style={{ opacity: offset.x > 0 ? opacity : 0 }}>
-          詳細を見る
+        {/* Swipe feedback overlays */}
+        <div className="sd-feedback sd-feedback--like" style={{ opacity: rightOpacity }}>
+          <span>気になる</span>
         </div>
-        <div className="sd-label sd-label--left" style={{ opacity: offset.x < 0 ? opacity : 0 }}>
-          スキップ
-        </div>
-        <div className="sd-label sd-label--up" style={{ opacity: offset.y < 0 ? upOpacity : 0 }}>
-          LINE予約
+        <div className="sd-feedback sd-feedback--nope" style={{ opacity: leftOpacity }}>
+          <span>スキップ</span>
         </div>
 
-        {/* Card info */}
+        {/* Card content */}
         <div className="sd-card-info">
           <div className="sd-card-top">
             <span className="sd-badge">{current.area}</span>
@@ -168,8 +182,8 @@ export function SwipeDeck({
           </div>
           <h2 className="sd-card-name">{current.name}</h2>
           <div className="sd-card-meta">
-            <span>徒歩{current.walkMinutes}分</span>
-            <span>待ち{current.waitMinutes}分</span>
+            <span>🚶 {current.walkMinutes}分</span>
+            <span>⏱ 待ち{current.waitMinutes}分</span>
             <span>〜{current.lastOrderAt}</span>
           </div>
           <div className="sd-card-tags">
@@ -177,29 +191,30 @@ export function SwipeDeck({
               <span className="sd-tag" key={tag}>{tag}</span>
             ))}
           </div>
+          {/* Tap hint */}
+          <div className="sd-tap-hint">タップで詳細を見る</div>
         </div>
       </div>
 
-      {/* Action buttons */}
+      {/* Action buttons with labels */}
       <div className="sd-actions">
-        <button className="sd-action sd-action--skip" onClick={() => dismiss("left")} type="button" aria-label="スキップ">
-          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        <button className="sd-action sd-action--skip" onClick={() => advance("left")} type="button">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+          <span>スキップ</span>
         </button>
-        <button className="sd-action sd-action--line" onClick={() => dismiss("up")} type="button" aria-label="LINE予約">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><polyline points="17 11 12 6 7 11"/><line x1="12" y1="18" x2="12" y2="6"/></svg>
+        <button className="sd-action sd-action--detail" onClick={() => router.push(`/stores/${current.slug}`)} type="button">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+          <span>詳細</span>
         </button>
-        <Link className="sd-action sd-action--detail" href={`/stores/${current.slug}`} aria-label="詳細">
-          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
-        </Link>
+        <button className="sd-action sd-action--like" onClick={() => advance("right")} type="button">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+          <span>気になる</span>
+        </button>
       </div>
 
-      {/* Progress */}
-      <div className="sd-progress">
-        <div className="sd-progress-bar" style={{ width: `${((stores.length - deck.length) / stores.length) * 100}%` }} />
-      </div>
-
-      {/* Count */}
-      <div className="sd-count">{stores.length - deck.length + 1} / {stores.length}</div>
+      {/* Scroll hint */}
+      <div className="sd-scroll-hint">↓ 下にスクロールでカテゴリ一覧</div>
+    </div>
     </div>
   );
 }

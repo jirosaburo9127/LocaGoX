@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useState } from "react";
+import { useState } from "react";
 import { BottomNav } from "./bottom-nav";
 import { SearchOverlay } from "./search-overlay";
 import { RecentlyViewedRow } from "./recently-viewed";
@@ -32,16 +32,15 @@ export function HomeClientShell({
   children: React.ReactNode;
 }) {
   const [searchOpen, setSearchOpen] = useState(false);
-  const [swipeFinished, setSwipeFinished] = useState(false);
-
-  const handleFinished = useCallback(() => setSwipeFinished(true), []);
 
   return (
     <>
-      {!swipeFinished && swipeStores.length > 0 && (
-        <SwipeDeck stores={swipeStores} onFinished={handleFinished} />
-      )}
-      {(swipeFinished || swipeStores.length === 0) && children}
+      {/* Swipe deck is always first, scrollable past */}
+      {swipeStores.length > 0 && <SwipeDeck stores={swipeStores} />}
+
+      {/* Netflix rows always below */}
+      {children}
+
       <RecentlyViewedRow />
       <BottomNav onSearchOpen={() => setSearchOpen(true)} />
       <SearchOverlay stores={stores} isOpen={searchOpen} onClose={() => setSearchOpen(false)} />
