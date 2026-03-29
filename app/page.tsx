@@ -59,6 +59,18 @@ export default async function HomePage() {
     walkMinutes: s.walkMinutes, isOpen: s.isOpen, imgIndex: i
   }));
 
+  // Swipe deck: top 15 nearest open stores
+  const swipeStores = uniqueStores
+    .filter((s) => s.isOpen)
+    .sort((a, b) => a.walkMinutes - b.walkMinutes)
+    .slice(0, 15)
+    .map((s, i) => ({
+      slug: s.slug, name: s.name, area: s.area, category: s.category,
+      walkMinutes: s.walkMinutes, waitMinutes: s.waitMinutes,
+      lastOrderAt: s.lastOrderAt, isOpen: s.isOpen, imgIndex: i,
+      benefitTags: s.benefitTags
+    }));
+
   return (
     <main className="nf-app">
       <ScrollTopbar
@@ -67,7 +79,7 @@ export default async function HomePage() {
         navHref={buildAreaCategoryPath(home.heroStore.area, home.heroStore.category)}
       />
 
-      <HomeClientShell stores={searchStores}>
+      <HomeClientShell stores={searchStores} swipeStores={swipeStores}>
 
         {/* Billboard Carousel */}
         <BillboardCarousel stores={heroCandidates} />
