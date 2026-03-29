@@ -76,10 +76,10 @@ export function SwipeDeck({ stores }: { stores: SwipeStore[] }) {
       return;
     }
 
-    if (offset.x > SWIPE_THRESHOLD) {
-      advance("right");
-    } else if (offset.x < -SWIPE_THRESHOLD) {
+    if (offset.x < -SWIPE_THRESHOLD) {
       advance("left");
+    } else if (offset.x > SWIPE_THRESHOLD) {
+      advance("right");
     } else {
       setOffset({ x: 0, y: 0 });
     }
@@ -103,7 +103,6 @@ export function SwipeDeck({ stores }: { stores: SwipeStore[] }) {
         <div className="sd-done">
           <div className="sd-header-badge">完了</div>
           <p>近くの{stores.length}件をチェックしました</p>
-          <span className="sd-done-sub">下にスクロールでカテゴリ別に探せます ↓</span>
         </div>
       </div>
     );
@@ -120,7 +119,7 @@ export function SwipeDeck({ stores }: { stores: SwipeStore[] }) {
       <div className="sd-header">
         <div className="sd-header-badge">今すぐ行ける</div>
         <h2 className="sd-header-title">近くの{stores.length}件をスワイプ</h2>
-        <p className="sd-header-sub">← スキップ ・ タップで詳細 ・ 気になる →</p>
+        <p className="sd-header-sub">← スワイプで次へ ・ タップで詳細</p>
       </div>
     <div className="sd-container">
       {/* Progress segments */}
@@ -166,11 +165,11 @@ export function SwipeDeck({ stores }: { stores: SwipeStore[] }) {
         <div className="sd-card-gradient" />
 
         {/* Swipe feedback overlays */}
-        <div className="sd-feedback sd-feedback--like" style={{ opacity: rightOpacity }}>
-          <span>気になる</span>
+        <div className="sd-feedback sd-feedback--next" style={{ opacity: leftOpacity }}>
+          <span>次へ</span>
         </div>
-        <div className="sd-feedback sd-feedback--nope" style={{ opacity: leftOpacity }}>
-          <span>スキップ</span>
+        <div className="sd-feedback sd-feedback--save" style={{ opacity: rightOpacity }}>
+          <span>保存</span>
         </div>
 
         {/* Card content */}
@@ -198,22 +197,20 @@ export function SwipeDeck({ stores }: { stores: SwipeStore[] }) {
 
       {/* Action buttons with labels */}
       <div className="sd-actions">
-        <button className="sd-action sd-action--skip" onClick={() => advance("left")} type="button">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-          <span>スキップ</span>
+        <button className="sd-action sd-action--next" onClick={() => advance("left")} type="button">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><polyline points="13 17 18 12 13 7"/><polyline points="6 17 11 12 6 7"/></svg>
+          <span>次へ</span>
         </button>
         <button className="sd-action sd-action--detail" onClick={() => router.push(`/stores/${current.slug}`)} type="button">
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
           <span>詳細</span>
         </button>
-        <button className="sd-action sd-action--like" onClick={() => advance("right")} type="button">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
-          <span>気になる</span>
+        <button className="sd-action sd-action--save" onClick={() => advance("right")} type="button">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+          <span>保存</span>
         </button>
       </div>
 
-      {/* Scroll hint */}
-      <div className="sd-scroll-hint">↓ 下にスクロールでカテゴリ一覧</div>
     </div>
     </div>
   );
