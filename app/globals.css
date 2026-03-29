@@ -1068,12 +1068,11 @@ button, input { font: inherit; }
    ================================================ */
 
 .cp-container {
-  padding: 24px 16px 32px;
+  padding: 16px 16px 24px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 20px;
-  min-height: 60vh;
+  gap: 14px;
 }
 
 .cp-header {
@@ -1082,74 +1081,74 @@ button, input { font: inherit; }
 
 .cp-title {
   margin: 0;
-  font-size: clamp(22px, 5.5vw, 30px);
+  font-size: 18px;
   font-weight: 800;
   letter-spacing: -0.03em;
 }
 
 .cp-sub {
-  margin: 6px 0 0;
-  font-size: 13px;
+  margin: 4px 0 0;
+  font-size: 12px;
   color: var(--muted);
 }
 
 .cp-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 10px;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
   width: 100%;
-  max-width: 420px;
+  max-width: 460px;
 }
 
 .cp-card {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 6px;
-  padding: 18px 8px 14px;
-  border-radius: 16px;
-  border: 1px solid rgba(27, 23, 19, 0.08);
-  background: rgba(255, 255, 255, 0.7);
+  gap: 3px;
+  padding: 10px 4px 8px;
+  border-radius: 12px;
+  border: 1px solid rgba(27, 23, 19, 0.07);
+  background: rgba(255, 255, 255, 0.65);
   cursor: pointer;
-  transition: transform 150ms var(--ease), box-shadow 150ms var(--ease), border-color 150ms var(--ease);
+  transition: transform 120ms var(--ease), box-shadow 120ms var(--ease), border-color 120ms var(--ease);
 }
 
 .cp-card:hover {
-  transform: translateY(-3px);
-  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(74, 48, 26, 0.1);
   border-color: var(--accent);
 }
 
 .cp-card:active {
-  transform: scale(0.95) !important;
+  transform: scale(0.94) !important;
 }
 
 .cp-icon {
-  font-size: 28px;
+  font-size: 20px;
   line-height: 1;
 }
 
 .cp-name {
-  font-size: 13px;
+  font-size: 11px;
   font-weight: 700;
   text-align: center;
-  line-height: 1.2;
+  line-height: 1.15;
 }
 
 .cp-count {
-  font-size: 11px;
+  font-size: 9px;
   color: var(--muted);
 }
 
 .cp-all {
-  padding: 14px 32px;
-  border-radius: 12px;
-  border: 1px solid rgba(27, 23, 19, 0.12);
-  background: rgba(255, 255, 255, 0.8);
-  font-size: 14px;
+  padding: 10px 24px;
+  border-radius: 10px;
+  border: 1px solid rgba(27, 23, 19, 0.1);
+  background: rgba(255, 255, 255, 0.7);
+  font-size: 13px;
   font-weight: 700;
   cursor: pointer;
-  transition: background 150ms var(--ease), transform 150ms var(--ease);
+  transition: background 120ms var(--ease), transform 120ms var(--ease);
 }
 
 .cp-all:hover {

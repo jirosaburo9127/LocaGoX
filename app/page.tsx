@@ -5,7 +5,7 @@ import { FavoritesRail } from "@/app/components/favorites-rail";
 import { HomeClientShell } from "@/app/components/home-client";
 import { ScrollTopbar } from "@/app/components/scroll-topbar";
 import { buildAreaCategoryPath } from "@/lib/catalog";
-import { getHomeView, getCategoryRows, getAreaRows } from "@/lib/data";
+import { getHomeView, getCategoryRows, getAreaRows, getAllMockStores } from "@/lib/data";
 
 function NfCard({
   id,
@@ -59,8 +59,9 @@ export default async function HomePage() {
     walkMinutes: s.walkMinutes, isOpen: s.isOpen, imgIndex: i
   }));
 
-  // Swipe deck: all open stores (filtered by category on client)
-  const swipeStores = uniqueStores
+  // Swipe deck: ALL stores (filtered by category on client)
+  const allStoresForSwipe = getAllMockStores();
+  const swipeStores = allStoresForSwipe
     .filter((s) => s.isOpen)
     .sort((a, b) => a.walkMinutes - b.walkMinutes)
     .map((s, i) => ({

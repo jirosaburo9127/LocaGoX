@@ -14,7 +14,8 @@ import {
   getMockStoreBySlug,
   getMockStoreSlugs,
   getMockCategoryRows,
-  getMockAreaRows
+  getMockAreaRows,
+  getMockStores
 } from "@/lib/mock-data";
 import { isMockModeEnabled } from "@/lib/mock-mode";
 
@@ -325,4 +326,8 @@ export function getCategoryRows() {
 
 export function getAreaRows() {
   return getMockAreaRows();
+}
+
+export function getAllMockStores(): Store[] {
+  return getMockStores();
 }
