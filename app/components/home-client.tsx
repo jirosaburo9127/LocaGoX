@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { BottomNav } from "./bottom-nav";
 import { SearchOverlay } from "./search-overlay";
 import { RecentlyViewedRow } from "./recently-viewed";
@@ -22,70 +22,6 @@ type SwipeStore = SearchStore & {
   benefitTags: string[];
 };
 
-type CategoryInfo = {
-  name: string;
-  icon: string;
-  count: number;
-};
-
-const CATEGORY_ICONS: Record<string, string> = {
-  "ヘッドスパ": "💆",
-  "整体": "🦴",
-  "マッサージ": "💪",
-  "リラクゼーション": "🧘",
-  "エステ": "✨",
-  "美容室": "💇",
-  "ネイル": "💅",
-  "ネイルサロン": "💅",
-  "ヨガ": "🧘‍♀️",
-  "ヨガスタジオ": "🧘‍♀️",
-  "パーソナルジム": "🏋️",
-  "鍼灸": "📍",
-  "居酒屋": "🍶",
-  "焼肉": "🥩",
-  "イタリアン": "🍝",
-  "フレンチ": "🇫🇷",
-  "カフェ": "☕",
-  "ラーメン": "🍜",
-  "寿司": "🍣",
-  "スイーツ": "🍰",
-  "カレー": "🍛",
-};
-
-function CategoryPicker({
-  categories,
-  onSelect
-}: {
-  categories: CategoryInfo[];
-  onSelect: (category: string | null) => void;
-}) {
-  return (
-    <div className="cp-container">
-      <div className="cp-header">
-        <h1 className="cp-title">何を探していますか？</h1>
-        <p className="cp-sub">カテゴリを選んでスワイプで探す</p>
-      </div>
-      <div className="cp-grid">
-        {categories.map((cat) => (
-          <button
-            className="cp-card"
-            key={cat.name}
-            onClick={() => onSelect(cat.name)}
-            type="button"
-          >
-            <span className="cp-icon">{cat.icon}</span>
-            <span className="cp-name">{cat.name}</span>
-            <span className="cp-count">{cat.count}件</span>
-          </button>
-        ))}
-      </div>
-      <button className="cp-all" onClick={() => onSelect(null)} type="button">
-        すべてのお店を見る
-      </button>
-    </div>
-  );
-}
-
 export function HomeClientShell({
   stores,
   swipeStores,
@@ -96,49 +32,114 @@ export function HomeClientShell({
   children: React.ReactNode;
 }) {
   const [searchOpen, setSearchOpen] = useState(false);
-  const [selectedCategory, setSelectedCategory] = useState<string | null | undefined>(undefined);
+  const [selectedArea, setSelectedArea] = useState<string>("すべて");
+  const [selectedCategory, setSelectedCategory] = useState<string>("すべて");
+  const [locating, setLocating] = useState(false);
 
-  // Build category list from all swipe stores
-  const categories = useMemo(() => {
-    const map = new Map<string, number>();
-    for (const s of swipeStores) {
-      map.set(s.category, (map.get(s.category) ?? 0) + 1);
-    }
-    return Array.from(map.entries())
-      .map(([name, count]) => ({
-        name,
-        icon: CATEGORY_ICONS[name] ?? "🏪",
-        count
-      }))
-      .sort((a, b) => b.count - a.count);
+  // Unique areas & categories from data
+  const areas = useMemo(() => {
+    const set = new Set(swipeStores.map((s) => s.area));
+    return ["すべて", ...Array.from(set).sort()];
   }, [swipeStores]);
 
-  // Filter swipe stores by selected category
-  const filteredStores = useMemo(() => {
-    if (selectedCategory === null) return swipeStores;
-    if (selectedCategory === undefined) return [];
-    return swipeStores.filter((s) => s.category === selectedCategory);
-  }, [swipeStores, selectedCategory]);
+  const categories = useMemo(() => {
+    const set = new Set(swipeStores.map((s) => s.category));
+    return ["すべて", ...Array.from(set).sort()];
+  }, [swipeStores]);
 
-  const showPicker = selectedCategory === undefined;
+  // Filter stores
+  const filtered = useMemo(() => {
+    return swipeStores.filter((s) => {
+      if (selectedArea !== "すべて" && s.area !== selectedArea) return false;
+      if (selectedCategory !== "すべて" && s.category !== selectedCategory) return false;
+      return true;
+    });
+  }, [swipeStores, selectedArea, selectedCategory]);
+
+  // Simulate geolocation → pick nearest area
+  const useLocation = useCallback(() => {
+    setLocating(true);
+    // Simulate: pick "恵比寿" as nearest after a short delay
+    if ("geolocation" in navigator) {
+      navigator.geolocation.getCurrentPosition(
+        () => {
+          // In demo, always resolve to 恵比寿
+          setSelectedArea("恵比寿");
+          setLocating(false);
+        },
+        () => {
+          setSelectedArea("恵比寿");
+          setLocating(false);
+        },
+        { timeout: 3000 }
+      );
+    } else {
+      setSelectedArea("恵比寿");
+      setLocating(false);
+    }
+  }, []);
 
   return (
     <>
-      {showPicker ? (
-        <CategoryPicker categories={categories} onSelect={setSelectedCategory} />
-      ) : (
-        <>
-          {/* Category label + back button */}
-          <div className="sd-cat-bar">
-            <button className="sd-cat-back" onClick={() => setSelectedCategory(undefined)} type="button">
-              ← カテゴリ
-            </button>
-            <span className="sd-cat-label">
-              {selectedCategory ?? "すべて"} ({filteredStores.length}件)
-            </span>
+      {/* Filter bar */}
+      <div className="fb-container">
+        <div className="fb-row">
+          {/* Area selector */}
+          <div className="fb-group">
+            <label className="fb-label">エリア</label>
+            <div className="fb-select-row">
+              <select
+                className="fb-select"
+                value={selectedArea}
+                onChange={(e) => setSelectedArea(e.target.value)}
+              >
+                {areas.map((a) => (
+                  <option key={a} value={a}>{a}</option>
+                ))}
+              </select>
+              <button
+                className="fb-location-btn"
+                onClick={useLocation}
+                disabled={locating}
+                type="button"
+              >
+                {locating ? (
+                  <span className="fb-spinner" />
+                ) : (
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><circle cx="12" cy="12" r="3"/><path d="M12 2v4M12 18v4M2 12h4M18 12h4"/></svg>
+                )}
+              </button>
+            </div>
           </div>
-          {filteredStores.length > 0 && <SwipeDeck stores={filteredStores} key={selectedCategory ?? "all"} />}
-        </>
+
+          {/* Category selector */}
+          <div className="fb-group">
+            <label className="fb-label">カテゴリ</label>
+            <select
+              className="fb-select"
+              value={selectedCategory}
+              onChange={(e) => setSelectedCategory(e.target.value)}
+            >
+              {categories.map((c) => (
+                <option key={c} value={c}>{c}</option>
+              ))}
+            </select>
+          </div>
+        </div>
+
+        {/* Result count */}
+        <div className="fb-result">
+          {filtered.length > 0 ? (
+            <span>{filtered.length}件のお店が見つかりました</span>
+          ) : (
+            <span>条件に合うお店がありません</span>
+          )}
+        </div>
+      </div>
+
+      {/* Swipe deck with filtered stores */}
+      {filtered.length > 0 && (
+        <SwipeDeck stores={filtered} key={`${selectedArea}-${selectedCategory}`} />
       )}
 
       {/* Netflix rows always below */}

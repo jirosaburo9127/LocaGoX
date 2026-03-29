@@ -1064,127 +1064,106 @@ button, input { font: inherit; }
    ================================================ */
 
 /* ================================================
-   Category Picker
+   Filter Bar
    ================================================ */
 
-.cp-container {
-  padding: 16px 16px 24px;
+.fb-container {
+  padding: 12px 16px 4px;
+}
+
+.fb-row {
+  display: flex;
+  gap: 10px;
+}
+
+.fb-group {
+  flex: 1;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  gap: 14px;
+  gap: 4px;
 }
 
-.cp-header {
-  text-align: center;
-}
-
-.cp-title {
-  margin: 0;
-  font-size: 18px;
-  font-weight: 800;
-  letter-spacing: -0.03em;
-}
-
-.cp-sub {
-  margin: 4px 0 0;
-  font-size: 12px;
+.fb-label {
+  font-size: 10px;
+  font-weight: 700;
   color: var(--muted);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
 }
 
-.cp-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 8px;
-  width: 100%;
-  max-width: 460px;
-}
-
-.cp-card {
+.fb-select-row {
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 3px;
-  padding: 10px 4px 8px;
-  border-radius: 12px;
-  border: 1px solid rgba(27, 23, 19, 0.07);
-  background: rgba(255, 255, 255, 0.65);
-  cursor: pointer;
-  transition: transform 120ms var(--ease), box-shadow 120ms var(--ease), border-color 120ms var(--ease);
+  gap: 6px;
 }
 
-.cp-card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(74, 48, 26, 0.1);
+.fb-select {
+  flex: 1;
+  padding: 8px 10px;
+  border-radius: 8px;
+  border: 1px solid rgba(27, 23, 19, 0.1);
+  background: rgba(255, 255, 255, 0.8);
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--ink);
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg width='10' height='6' viewBox='0 0 10 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1L5 5L9 1' stroke='%236a6158' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  padding-right: 28px;
+  cursor: pointer;
+  transition: border-color 150ms var(--ease);
+}
+
+.fb-select:focus {
+  outline: none;
   border-color: var(--accent);
 }
 
-.cp-card:active {
-  transform: scale(0.94) !important;
-}
-
-.cp-icon {
-  font-size: 20px;
-  line-height: 1;
-}
-
-.cp-name {
-  font-size: 11px;
-  font-weight: 700;
-  text-align: center;
-  line-height: 1.15;
-}
-
-.cp-count {
-  font-size: 9px;
-  color: var(--muted);
-}
-
-.cp-all {
-  padding: 10px 24px;
-  border-radius: 10px;
+.fb-location-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 8px;
   border: 1px solid rgba(27, 23, 19, 0.1);
-  background: rgba(255, 255, 255, 0.7);
-  font-size: 13px;
-  font-weight: 700;
+  background: rgba(255, 255, 255, 0.8);
+  color: var(--accent);
   cursor: pointer;
-  transition: background 120ms var(--ease), transform 120ms var(--ease);
+  flex-shrink: 0;
+  transition: background 150ms var(--ease), transform 150ms var(--ease);
 }
 
-.cp-all:hover {
+.fb-location-btn:hover {
   background: white;
 }
 
-.cp-all:active {
-  transform: scale(0.96);
+.fb-location-btn:active {
+  transform: scale(0.92);
 }
 
-/* Category bar above swipe deck */
-
-.sd-cat-bar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 8px 16px;
+.fb-location-btn:disabled {
+  opacity: 0.5;
+  cursor: default;
 }
 
-.sd-cat-back {
-  background: none;
-  border: 0;
-  font-size: 14px;
-  font-weight: 600;
-  color: var(--accent);
-  cursor: pointer;
-  padding: 6px 0;
+.fb-spinner {
+  width: 14px;
+  height: 14px;
+  border: 2px solid rgba(203, 93, 56, 0.2);
+  border-top-color: var(--accent);
+  border-radius: 50%;
+  animation: fb-spin 600ms linear infinite;
 }
 
-.sd-cat-back:active {
-  opacity: 0.6;
+@keyframes fb-spin {
+  to { transform: rotate(360deg); }
 }
 
-.sd-cat-label {
-  font-size: 14px;
-  font-weight: 700;
+.fb-result {
+  padding: 6px 0 2px;
+  font-size: 12px;
+  color: var(--muted);
 }
 
 .sd-section {

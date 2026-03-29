@@ -99,11 +99,8 @@ export function SwipeDeck({ stores }: { stores: SwipeStore[] }) {
 
   if (finished || !current) {
     return (
-      <div className="sd-section">
-        <div className="sd-done">
-          <div className="sd-header-badge">完了</div>
-          <p>近くの{stores.length}件をチェックしました</p>
-        </div>
+      <div className="sd-done">
+        <p>{stores.length}件すべてチェック済み</p>
       </div>
     );
   }
@@ -117,9 +114,7 @@ export function SwipeDeck({ stores }: { stores: SwipeStore[] }) {
   return (
     <div className="sd-section">
       <div className="sd-header">
-        <div className="sd-header-badge">今すぐ行ける</div>
-        <h2 className="sd-header-title">近くの{stores.length}件をスワイプ</h2>
-        <p className="sd-header-sub">← スワイプで次へ ・ タップで詳細</p>
+        <p className="sd-header-sub">← 次へ ・ タップで詳細 ・ 保存 →</p>
       </div>
     <div className="sd-container">
       {/* Progress segments */}
